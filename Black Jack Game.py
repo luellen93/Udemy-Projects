@@ -26,11 +26,7 @@ class Card:
         self.rank = rank
 
     def __str__(self):
-    
-        if self.suit == 'Hearts' or self.suit == 'Diamonds':
-            return Fore.RED + f'{self.rank} of {self.suit}'
-        else:
-            return f'{self.rank} of {self.suit}'
+        return f'{self.rank} of {self.suit}'
     
 class Deck:
 
@@ -136,13 +132,13 @@ def hit_or_stand(deck, hand):
 def show_some(player, dealer):
     
     # Show only one dealer card 
-    print(Fore.YELLOW + "\n Dealer's Hand: ")
-    print(Fore.BLUE + "First card hidden!")
+    print(Back.WHITE + Fore.BLACK + "\n Dealer's Hand: ")
+    print("First card hidden!")
     print(dealer.cards[1])
     print(Fore.CYAN + Style.BRIGHT + f'Dealer hand total: {values[dealer.cards[1].rank]}')
 
     # Show all of players cards
-    print(Fore.MAGENTA + "\n Player's hand: ")
+    print(Back.WHITE + Fore.BLACK + "\n Player's hand: ")
     for card in player.cards:
         print(card)
     print(Fore.CYAN + Style.BRIGHT + f'Player hand total: {player_hand.value}')
@@ -151,14 +147,14 @@ def show_some(player, dealer):
 def show_all(player, dealer):
 
     # Show all the dealer's cards
-    print(Fore.YELLOW + "\n Dealer's hand: ")
+    print(Back.WHITE + Fore.BLACK + "\n Dealer's hand: ")
     for card in dealer.cards:
         print(card)
     # Calculate value and display
     print(Fore.CYAN + Style.BRIGHT + f"Value of Dealer's hand is: {dealer.value}")
 
     # Show all of the players cards
-    print(Fore.MAGENTA + "\n Player's hand: ")
+    print(Back.WHITE + Fore.BLACK + "\n Player's hand: ")
     for card in player.cards:
         print(card)
     print(Fore.CYAN + Style.BRIGHT + f"Value of Player's hand is: {player.value}")
