@@ -160,7 +160,6 @@ def show_all(player, dealer):
     # Show all of the players cards
     print(Fore.MAGENTA + "\n Player's hand: ")
     for card in player.cards:
-        time.sleep(0.5)
         print(card)
     print(Fore.CYAN + Style.BRIGHT + f"Value of Player's hand is: {player.value}")
 
