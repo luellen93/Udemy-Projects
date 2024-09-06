@@ -3,6 +3,13 @@ Blackjack Simulator
 '''
 
 import random
+import time
+import os
+import colorama
+from colorama import Fore, Back, Style
+colorama.init(autoreset=True)
+
+
 
 suits = ('Hearts', 'Diamonds', 'Spades', 'Clubs')
 ranks = ('Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King', 'Ace')
@@ -19,7 +26,11 @@ class Card:
         self.rank = rank
 
     def __str__(self):
-        return f'{self.rank} of {self.suit}'
+    
+        if self.suit == 'Hearts' or self.suit == 'Diamonds':
+            return Fore.RED + f'{self.rank} of {self.suit}'
+        else:
+            return f'{self.rank} of {self.suit}'
     
 class Deck:
 
@@ -87,6 +98,8 @@ def take_bet(chips):
     while True:
         try:
             chips.bet = int(input("Please enter your bet amount: "))
+            while chips.bet < 1:
+                chips.bet = int(input("Please enter your bet amount: "))
 
         except:
             print("Please enter a valid bet amount.")
@@ -123,49 +136,60 @@ def hit_or_stand(deck, hand):
 def show_some(player, dealer):
     
     # Show only one dealer card 
-    print("\n Dealer's Hand: ")
-    print("First card hidden!")
+    print(Fore.YELLOW + "\n Dealer's Hand: ")
+    print(Fore.BLUE + "First card hidden!")
     print(dealer.cards[1])
+    print(Fore.CYAN + Style.BRIGHT + f'Dealer hand total: {values[dealer.cards[1].rank]}')
 
     # Show all of players cards
-    print("\n Player's hand: ")
+    print(Fore.MAGENTA + "\n Player's hand: ")
     for card in player.cards:
         print(card)
+    print(Fore.CYAN + Style.BRIGHT + f'Player hand total: {player_hand.value}')
     
 
 def show_all(player, dealer):
 
     # Show all the dealer's cards
-    print("\n Dealer's hand: ")
+    print(Fore.YELLOW + "\n Dealer's hand: ")
     for card in dealer.cards:
         print(card)
     # Calculate value and display
-    print(f"Value of Dealer's hand is: {dealer.value}")
+    print(Fore.CYAN + Style.BRIGHT + f"Value of Dealer's hand is: {dealer.value}")
 
     # Show all of the players cards
-    print("\n Player's hand: ")
+    print(Fore.MAGENTA + "\n Player's hand: ")
     for card in player.cards:
+        time.sleep(0.5)
         print(card)
-    print(f"Value of Player's hand is: {player.value}")
+    print(Fore.CYAN + Style.BRIGHT + f"Value of Player's hand is: {player.value}")
 
 def player_busts(player, dealer, chips):
-    print("Players busts!")
+    print(Fore.YELLOW + "Players busts!")
     chips.lose_bet()
 
 def player_wins(player, dealer, chips):
-    print("Player wins!")
+    print(Fore.MAGENTA + Style.BRIGHT + "Player wins!")
     chips.win_bet()
 
 def dealer_busts(player, dealer, chips):
-    print("Player wins, Dealer busted!")
+    print(Fore.MAGENTA + Style.BRIGHT + "Player wins, Dealer busted!")
     chips.win_bet()
 
 def dealer_wins(player, dealer, chips):
-    print("Dealer wins!")
+    print(Fore.YELLOW + "Dealer wins!")
     chips.lose_bet()
 
 def push(player, dealer):
     print("Dealer and player tie. Push!")
+
+def clear_screen():
+    # Clear the screen for Windows
+    if os.name == 'nt':
+        os.system('cls')
+    # Clear the screen for macOS and Linux
+    else:
+        os.system('clear')
 
 '''
 This begins the logic engine of the game
@@ -176,6 +200,7 @@ player_chips = Chips()
 while True:
     #Opening statement
     print("Welcome To Blackjack!")
+    print(Fore.GREEN + f'Starting chips are: {player_chips.total}')
 
     #Create a new deck object
     deck = Deck()
@@ -185,14 +210,15 @@ while True:
     player_hand = Hand()
     player_hand.add_card(deck.deal())
     player_hand.add_card(deck.deal())
+    
 
     dealer_hand = Hand()
     dealer_hand.add_card(deck.deal())
     dealer_hand.add_card(deck.deal())
-
     
 
     #Prompt player for bet
+    
     take_bet(player_chips)
 
     #Show cards (keeping one dealer card hidden)
@@ -204,6 +230,7 @@ while True:
         hit_or_stand(deck, player_hand)
 
         #Show cards (keeping one dealer card hidden)
+        clear_screen()
         show_some(player_hand, dealer_hand)
 
         #If player hand exceeds 21
@@ -218,6 +245,7 @@ while True:
             hit(deck, dealer_hand)
 
         #Show all cards now that dealer is done playing
+        clear_screen()
         show_all(player_hand, dealer_hand)
 
         #Determine winner
@@ -231,7 +259,7 @@ while True:
             push(player_hand, dealer_hand)
 
     #Inform player of chip total
-    print(f"\n Player total chips are: {player_chips.total}")
+    print(Fore.GREEN + f"\n Player total chips are: {player_chips.total}")
 
     #Determine if chip total is 0
     if player_chips.total == 0:
@@ -239,11 +267,18 @@ while True:
         break
 
     #Ask to play again
-    new_game = input("Would you like to play another hand? y/n ")
+
+    while True:
+        new_game = input("Would you like to play another hand? y/n ")
+        if new_game.lower() == 'y' or new_game.lower() == 'n':
+            break
+        
 
     if new_game[0].lower() == 'y':
         playing = True
+        clear_screen()
         continue
     else:
         print("Thanks for playing Blackjack!")
+        clear_screen()
         break
