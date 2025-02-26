@@ -1,2 +1,2 @@
 # Udemy-Projects
-Projects from the Python Bootcamp Udemy course
+Projects from the Python Bootcamp Udemy course. The games range in complexity from the "list game, which is Tic Tac Toe, up to Black Jack. Black Jack shows utilization of classes to handles a deck of cards, players hands, as well as each rank and suit of a card. The game can be ran in an environment with Python downloaded and includes the Python Colorama library, which will need to be installed, to include color text in the game. 
